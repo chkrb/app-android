@@ -10,5 +10,5 @@ ktfmt { kotlinLangStyle() }
 tasks.register<com.ncorti.ktfmt.gradle.tasks.KtfmtFormatTask>("ktfmtPreCommit") {
     description = "Run ktfmt as a hook for pre-commit-hooks"
     source = project.fileTree(rootDir)
-    include("**/*.kt", "**/*.kts")
+    include("app/src/main/kotlin/**/*.kt", "app/*.kts", "*.kts")
 }
