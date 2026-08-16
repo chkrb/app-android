@@ -12,19 +12,16 @@ import androidx.work.WorkRequest
 import androidx.work.WorkerParameters
 import io.github.easeatten.data.repos.SettingsRepository
 import io.github.easeatten.data.repos.UserRepository
-import io.github.easeatten.data.sources.LoginData
+import java.io.IOException
+import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.io.IOException
-import java.time.LocalTime
-import java.util.concurrent.TimeUnit
 
-class AttendanceSync(
-    val appContext: Context,
-    workerParams: WorkerParameters,
-) : CoroutineWorker(appContext, workerParams) {
+class AttendanceSync(val appContext: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(appContext, workerParams) {
     companion object Work {
         private const val LOGGER = "WORKER"
         private const val HOURS = 24L
