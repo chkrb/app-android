@@ -56,7 +56,9 @@ jobs:
     needs: [ "ktfmt", "detekt" ]
     steps:
       - uses: actions/checkout@v7
-      - run: git submodule update --init
+        with:
+          submodules: recursive
+
       - uses: actions/cache@v6
         with:
           path: |
