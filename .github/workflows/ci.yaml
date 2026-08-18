@@ -87,7 +87,7 @@ jobs:
           cargo install uniffi --features cli --bin uniffi-bindgen
 
       - name: Setup Rust toolchain
-        run: rustup target add aarch64-linux-android
+        run: rustup target add armv7-linux-androideabi aarch64-linux-android x86_64-linux-android
 
       - name: Build with Gradle
         run: ./gradlew build
