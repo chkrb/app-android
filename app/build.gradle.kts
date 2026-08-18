@@ -40,6 +40,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val abiTargets = listOf("armeabi-v7a", "arm64-v8a", "x86_64")
+
 android {
     namespace = "io.github.easeatten"
 
@@ -67,9 +69,16 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        ndk { abiFilters.addAll(listOf("arm64-v8a")) }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    splits {
+        abi {
+            isEnable = true
+
+            reset()
+            abiTargets.forEach { include(it) }
+        }
     }
 }
 
@@ -77,7 +86,7 @@ tasks.register<Exec>("rustSxcapiUniFfi") {
     description = "Generates bindings for rust crate dependency `sxcapi` with UniFFI."
     group = "rust"
 
-    val abi = android.defaultConfig.ndk.abiFilters.first()
+    val abi = abiTargets.first()
 
     workingDir = file("src/main/rust/sxcapi")
     inputs.dir(workingDir)
@@ -98,7 +107,7 @@ tasks.register<Exec>("rustSxcapiUniFfi") {
 
 tasks.named("preBuild") { dependsOn("rustSxcapiUniFfi") }
 
-android.defaultConfig.ndk.abiFilters.forEach { abi ->
+abiTargets.forEach { abi ->
     val rustSxcapiBuildTask = "rustSxcapiBuild_${abi.replace("-", "_")}"
     tasks.register<Exec>(rustSxcapiBuildTask) {
         description = "Builds rust crate dependency `sxcapi` ($abi)."
